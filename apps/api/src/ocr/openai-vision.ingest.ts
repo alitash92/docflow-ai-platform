@@ -1,4 +1,5 @@
 import type { FieldCandidate } from '../types.js';
+import { createOpenAIClient, withConnectionRetry } from '../llm/openai-transport.js';
 
 /**
  * OpenAI-vision-backed ingest for a real uploaded file.
@@ -8,10 +9,13 @@ import type { FieldCandidate } from '../types.js';
  * frontier vision LLM:
  *
  *   - images (png/jpg/webp/heic) → base64 → image_url content block → vision LLM
- *   - PDFs → extract the embedded text layer (pdfjs-dist). If a text layer is
- *     present, send the text; if the PDF is scanned (no text layer), we cannot
- *     rasterise without a heavy native dep, so we surface a clear, honest error
- *     telling the caller to upload an image of the page instead.
+ *   - PDFs → extract the embedded text layer of the FIRST PAGE ONLY (pdfjs-dist).
+ *     If a text layer is present, send that text; if the first page is scanned
+ *     (no text layer), we cannot rasterise without a heavy native dep, so we
+ *     surface a clear, honest error telling the caller to upload an image instead.
+ *   - CSV → read the first ~20 rows as text and extract.
+ *   - XLSX / spreadsheets → parse the first sheet's first ~20 rows and extract.
+ *   - other text → treated as UTF-8 text.
  *
  * Import-guarded: requires OPENAI_API_KEY. Provider-neutral wording is used in
  * all user-facing strings ("vision model" / "frontier vision LLM").
@@ -85,38 +89,37 @@ const EXTRACT_SYSTEM =
   'document; never invent data. The patient data in test documents is synthetic. ' +
   'Respond with a single JSON object matching the required schema.';
 
-async function client(apiKey: string): Promise<import('openai').default> {
-  const m = await import('openai');
-  return new m.default({ apiKey });
-}
-
 async function callVision(
   apiKey: string,
   model: string,
   userContent: Array<Record<string, unknown>> | string,
 ): Promise<IngestOutput> {
-  const openai = await client(apiKey);
+  const openai = await createOpenAIClient(apiKey);
   const backoff = [1000, 2000, 4000];
   let strict = true;
   let lastErr: unknown;
 
   for (let attempt = 0; attempt <= backoff.length; attempt++) {
     try {
-      const resp = await openai.chat.completions.create({
-        model,
-        temperature: 0,
-        response_format: strict
-          ? {
-              type: 'json_schema',
-              json_schema: { name: 'document_extraction', schema: EXTRACT_SCHEMA, strict: true },
-            }
-          : { type: 'json_object' },
-        messages: [
-          { role: 'system', content: EXTRACT_SYSTEM },
-          // image_url blocks require the array content form; text can be a string.
-          { role: 'user', content: userContent as never },
-        ],
-      });
+      // Retry connection-class failures ("Premature close", socket resets) that
+      // arise from stale keep-alive sockets on some cloud hosts.
+      const resp = await withConnectionRetry(() =>
+        openai.chat.completions.create({
+          model,
+          temperature: 0,
+          response_format: strict
+            ? {
+                type: 'json_schema',
+                json_schema: { name: 'document_extraction', schema: EXTRACT_SCHEMA, strict: true },
+              }
+            : { type: 'json_object' },
+          messages: [
+            { role: 'system', content: EXTRACT_SYSTEM },
+            // image_url blocks require the array content form; text can be a string.
+            { role: 'user', content: userContent as never },
+          ],
+        }),
+      );
       const raw = resp.choices[0]?.message?.content ?? '{}';
       const parsed = JSON.parse(raw) as {
         documentText?: string;
@@ -164,62 +167,133 @@ export async function ingestWithVision(
   }
   const model = defaultModel();
   const mime = (input.mimeType || '').toLowerCase();
-  const isImage = VISION_MIME.has(mime) || /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(input.fileName);
-  const isPdf = mime === 'application/pdf' || /\.pdf$/i.test(input.fileName);
+  const name = input.fileName || '';
+  const isImage = VISION_MIME.has(mime) || /\.(png|jpe?g|webp|gif|heic|heif)$/i.test(name);
+  const isPdf = mime === 'application/pdf' || /\.pdf$/i.test(name);
+  const isCsv =
+    mime === 'text/csv' ||
+    mime === 'application/csv' ||
+    /\.csv$/i.test(name) ||
+    /\.tsv$/i.test(name);
+  const isXlsx =
+    mime.includes('spreadsheetml') ||
+    mime === 'application/vnd.ms-excel' ||
+    /\.(xlsx|xls|xlsm|ods)$/i.test(name);
 
   if (isImage) {
     const b64 = input.buffer.toString('base64');
     const dataUrl = `data:${mime || 'image/png'};base64,${b64}`;
     const out = await callVision(apiKey, model, [
-      { type: 'text', text: `Extract structured fields from this document image (${input.fileName}).` },
+      { type: 'text', text: `Extract structured fields from this document image (${name}).` },
       { type: 'image_url', image_url: { url: dataUrl } },
     ]);
     return out;
   }
 
   if (isPdf) {
-    const { text, pages } = await extractPdfText(input.buffer);
+    // First page only — keeps cost/latency bounded and matches the demo's
+    // single-page intake assumption.
+    const { text, pages } = await extractPdfFirstPageText(input.buffer);
     if (!text.trim()) {
       throw new Error(
-        'This PDF appears to be scanned (no embedded text layer). PDF rasterisation is not ' +
-          'bundled in this build to keep dependencies minimal — please upload an image (PNG/JPG) ' +
-          'of the page to run vision extraction.',
+        'This PDF appears to be scanned (no embedded text layer on the first page). PDF ' +
+          'rasterisation is not bundled in this build to keep dependencies minimal — please ' +
+          'upload an image (PNG/JPG) of the page to run vision extraction.',
       );
     }
-    const out = await callVision(
-      apiKey,
-      model,
-      `Extract structured fields from this document text (${input.fileName}):\n\n${text.slice(0, 12000)}`,
-    );
+    const out = await extractFromText(apiKey, model, name, text);
     return { ...out, text: out.text || text, pages: pages || out.pages };
+  }
+
+  if (isCsv) {
+    const text = firstRowsAsText(input.buffer.toString('utf8'), 20);
+    if (!text.trim()) {
+      throw new Error('This CSV appears to be empty — no rows could be read.');
+    }
+    return extractFromText(apiKey, model, name, text);
+  }
+
+  if (isXlsx) {
+    const text = await extractSpreadsheetText(input.buffer, 20);
+    if (!text.trim()) {
+      throw new Error(
+        'This spreadsheet appears to be empty or could not be parsed — no rows could be read.',
+      );
+    }
+    return extractFromText(apiKey, model, name, text);
   }
 
   // Fallback: treat as UTF-8 text.
   const text = input.buffer.toString('utf8');
+  if (!text.trim()) {
+    throw new Error(
+      `Could not read any text from "${name}". Supported uploads: PDF (text layer), images ` +
+        '(PNG/JPG/WEBP/HEIC), CSV, and XLSX spreadsheets.',
+    );
+  }
+  return extractFromText(apiKey, model, name, text);
+}
+
+/** Send recovered document text to the extraction model (shared by text formats). */
+async function extractFromText(
+  apiKey: string,
+  model: string,
+  fileName: string,
+  text: string,
+): Promise<IngestOutput> {
   const out = await callVision(
     apiKey,
     model,
-    `Extract structured fields from this document text (${input.fileName}):\n\n${text.slice(0, 12000)}`,
+    `Extract structured fields from this document text (${fileName}):\n\n${text.slice(0, 12000)}`,
   );
   return { ...out, text: out.text || text };
 }
 
-async function extractPdfText(buffer: Buffer): Promise<{ text: string; pages: number }> {
+/** Keep only the first `maxRows` non-empty lines of a delimited text blob. */
+function firstRowsAsText(raw: string, maxRows: number): string {
+  return raw
+    .split(/\r?\n/)
+    .filter((line) => line.trim().length > 0)
+    .slice(0, maxRows)
+    .join('\n')
+    .trim();
+}
+
+async function extractPdfFirstPageText(
+  buffer: Buffer,
+): Promise<{ text: string; pages: number }> {
   // pdfjs-dist is loaded lazily so it is only needed in real mode. The legacy
-  // build runs cleanly under Node (no DOM / worker required).
+  // build runs cleanly under Node (no DOM / worker required). We read ONLY the
+  // first page's text layer — the intake pipeline keys off the cover page.
   const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
   const data = new Uint8Array(buffer);
   const doc = await pdfjs.getDocument({ data, useSystemFonts: true }).promise;
+  const totalPages = doc.numPages;
   let text = '';
-  for (let p = 1; p <= doc.numPages; p++) {
-    const page = await doc.getPage(p);
+  if (totalPages >= 1) {
+    const page = await doc.getPage(1);
     const content = await page.getTextContent();
-    text +=
-      content.items
-        .map((i) => ('str' in i ? (i as { str: string }).str : ''))
-        .join(' ') + '\n';
+    text = content.items
+      .map((i) => ('str' in i ? (i as { str: string }).str : ''))
+      .join(' ');
   }
-  return { text: text.trim(), pages: doc.numPages };
+  return { text: text.trim(), pages: totalPages };
+}
+
+/** Parse the first sheet's first `maxRows` rows of an XLSX/XLS/ODS workbook. */
+async function extractSpreadsheetText(buffer: Buffer, maxRows: number): Promise<string> {
+  const xlsx = (await import('xlsx')) as typeof import('xlsx');
+  const wb = xlsx.read(buffer, { type: 'buffer' });
+  const firstSheetName = wb.SheetNames[0];
+  if (!firstSheetName) return '';
+  const sheet = wb.Sheets[firstSheetName];
+  const rows = xlsx.utils.sheet_to_json<unknown[]>(sheet, { header: 1, blankrows: false });
+  return rows
+    .slice(0, maxRows)
+    .map((row) => (Array.isArray(row) ? row.map((c) => (c == null ? '' : String(c))).join('\t') : ''))
+    .filter((line) => line.trim().length > 0)
+    .join('\n')
+    .trim();
 }
 
 function clamp01(n: unknown): number {

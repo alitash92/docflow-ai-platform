@@ -24,6 +24,8 @@
     "openai": "^4.104.0",
     "pdfjs-dist": "^4.10.38",
     "react-router-dom": "^6.30.4",
+    "undici": "^6.27.0",
+    "xlsx": "^0.18.5",
     "zod": "3.24.1"
   },
   "devDependencies": {

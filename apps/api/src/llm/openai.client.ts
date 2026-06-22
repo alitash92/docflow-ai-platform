@@ -5,6 +5,7 @@ import type {
   LLMClient,
   RepairResult,
 } from './llm-client.interface.js';
+import { createOpenAIClient, withConnectionRetry } from './openai-transport.js';
 
 /**
  * OpenAIClient — real implementation of the LLMClient seam, backed by a
@@ -67,9 +68,7 @@ export class OpenAIClient implements LLMClient {
   /** Lazily import the SDK so the package is only required in real mode. */
   private async client(): Promise<import('openai').default> {
     if (!this.clientPromise) {
-      this.clientPromise = import('openai').then(
-        (m) => new m.default({ apiKey: this.apiKey }),
-      );
+      this.clientPromise = createOpenAIClient(this.apiKey as string);
     }
     return this.clientPromise;
   }
@@ -80,20 +79,24 @@ export class OpenAIClient implements LLMClient {
     const backoff = [1000, 2000, 4000];
 
     const request = (strict: boolean) =>
-      client.chat.completions.create({
-        model: opts.model,
-        temperature: 0,
-        response_format: strict
-          ? {
-              type: 'json_schema',
-              json_schema: { name: opts.schemaName, schema: opts.schema, strict: true },
-            }
-          : { type: 'json_object' },
-        messages: [
-          { role: 'system', content: `${opts.system}\nRespond with a single JSON object.` },
-          { role: 'user', content: opts.user },
-        ],
-      });
+      // Retry connection-class failures ("Premature close", socket resets) that
+      // arise from stale keep-alive sockets on some cloud hosts.
+      withConnectionRetry(() =>
+        client.chat.completions.create({
+          model: opts.model,
+          temperature: 0,
+          response_format: strict
+            ? {
+                type: 'json_schema',
+                json_schema: { name: opts.schemaName, schema: opts.schema, strict: true },
+              }
+            : { type: 'json_object' },
+          messages: [
+            { role: 'system', content: `${opts.system}\nRespond with a single JSON object.` },
+            { role: 'user', content: opts.user },
+          ],
+        }),
+      );
 
     let lastErr: unknown;
     let strict = true;
