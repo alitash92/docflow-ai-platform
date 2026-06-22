@@ -1,0 +1,14 @@
+{
+  "id": "Lab_Report_09",
+  "fileName": "Lab_Report_Lipid_Panel_Rev3.xlsx",
+  "source": "upload",
+  "sender": "portal upload — reference lab",
+  "pages": 4,
+  "receivedAgoMin": 9,
+  "bytesHex": "504b030414000600080000002100",
+  "patient": "Marcus Delgado (DOB 1971-03-14, MRN MG-44821)",
+  "extractText": "LAB REPORT — Comprehensive Lipid Panel, Revision 3. Patient: Marcus Delgado, MRN MG-44821. Total cholesterol 244 mg/dL (high). Two flagged results: LDL elevated, triglycerides borderline. Four sheets: summary, analyte values, reference ranges, flags. Collected 2026-06-05. Reported by reference lab.",
+  "classification": { "type": "Lab Report", "confidence": 0.95 },
+  "stageMs": { "ingest": 1100, "validate": 2400, "classify": 1700, "judge": 700, "route": 110 },
+  "piiRedactedTokens": 0
+}

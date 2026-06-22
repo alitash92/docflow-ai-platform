@@ -1,0 +1,18 @@
+{
+  "windowDays": 30,
+  "note": "Aggregated 30-day processing corpus (synthetic, modeled on a representative engagement; no real PHI). Every dashboard KPI is computed from these buckets at runtime — see apps/api/src/metrics/kpi.service.ts and the README section 'How these numbers are produced'.",
+  "buckets": [
+    { "type": "Referral",            "count": 912,  "autoRouted": 798,  "fieldsExtracted": 11400, "fieldsValidated": 11106, "costUsd": 38.30 },
+    { "type": "Insurance Claim",     "count": 1184, "autoRouted": 1095, "fieldsExtracted": 14800, "fieldsValidated": 14430, "costUsd": 44.99 },
+    { "type": "Prior Authorization", "count": 463,  "autoRouted": 312,  "fieldsExtracted": 6900,  "fieldsValidated": 6660,  "costUsd": 24.51 },
+    { "type": "Discharge Summary",   "count": 387,  "autoRouted": 305,  "fieldsExtracted": 8100,  "fieldsValidated": 7890,  "costUsd": 33.66 },
+    { "type": "Lab Report",          "count": 529,  "autoRouted": 397,  "fieldsExtracted": 6400,  "fieldsValidated": 6248,  "costUsd": 21.16 },
+    { "type": "Patient Intake",      "count": 812,  "autoRouted": 780,  "fieldsExtracted": 2400,  "fieldsValidated": 2366,  "costUsd": 13.19 }
+  ],
+  "priorPeriod": {
+    "count": 3633,
+    "accuracyPct": 96.2,
+    "autoRoutedPct": 77,
+    "avgCostUsd": 0.062
+  }
+}

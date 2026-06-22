@@ -1,0 +1,14 @@
+{
+  "id": "Referral_0482",
+  "fileName": "Referral_0482_Cardiology_Consult.pdf",
+  "source": "email",
+  "sender": "intake@meridiangeneral.example",
+  "pages": 12,
+  "receivedAgoMin": 2,
+  "bytesHex": "255044462d312e370a25e2e3cfd30a",
+  "patient": "Marcus Delgado (DOB 1971-03-14, MRN MG-44821)",
+  "extractText": "REFERRAL Referral_0482. Referring provider: Dr. M. Delgado, Meridian General Internal Medicine. Patient: Marcus Delgado, MRN MG-44821. Subject: Cardiology consult for new-onset atrial fibrillation noted on routine ECG. Requesting echocardiogram and rhythm evaluation. Priority: routine. Appointment requested by 2026-06-18. Relevant history: hypertension, no prior cardiac workup. Insurance on file; prior authorization not required for in-network consult.",
+  "classification": { "type": "Referral", "confidence": 0.98 },
+  "stageMs": { "ingest": 1800, "validate": 3200, "classify": 2100, "judge": 900, "route": 120 },
+  "piiRedactedTokens": 2
+}

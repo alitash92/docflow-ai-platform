@@ -1,0 +1,19 @@
+{
+  "docId": "Discharge_Summary_3",
+  "layoutEngine": [
+    { "name": "encounter", "value": "Cardiology inpatient — chest pain", "confidence": 0.97, "engine": "layout-engine (mock)" },
+    { "name": "revision_no", "value": "3", "confidence": 0.99, "engine": "layout-engine (mock)" },
+    { "name": "attending", "value": "Dr. R. Mercer", "confidence": 0.96, "engine": "layout-engine (mock)" },
+    { "name": "primary_diagnosis", "value": "Atypical chest pain, NSTEMI ruled out", "confidence": 0.97, "engine": "layout-engine (mock)" },
+    { "name": "followup_days", "value": "10", "confidence": 0.72, "engine": "layout-engine (mock)" },
+    { "name": "followup_date", "value": "2027-03-31", "confidence": 0.7, "engine": "layout-engine (mock)" }
+  ],
+  "visionEngine": [
+    { "name": "encounter", "value": "Cardiology inpatient — chest pain", "confidence": 0.96, "engine": "vision-engine (mock)" },
+    { "name": "revision_no", "value": "3", "confidence": 0.98, "engine": "vision-engine (mock)" },
+    { "name": "attending", "value": "Dr. R. Mercer", "confidence": 0.95, "engine": "vision-engine (mock)" },
+    { "name": "primary_diagnosis", "value": "Atypical chest pain, NSTEMI ruled out", "confidence": 0.96, "engine": "vision-engine (mock)" },
+    { "name": "followup_days", "value": "5", "confidence": 0.89, "engine": "vision-engine (mock)" },
+    { "name": "followup_date", "value": "2027-05-31", "confidence": 0.87, "engine": "vision-engine (mock)" }
+  ]
+}

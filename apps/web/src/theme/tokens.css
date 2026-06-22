@@ -1,0 +1,41 @@
+/* DocFlow AI design tokens — dark-slate / Inter / blue, 8px radius.
+   This identity is exclusive to this project. */
+:root {
+  --bg: #0f172a;
+  --bg-raised: #14213b;
+  --panel: #131e36;
+  --panel-border: #1e2c4d;
+  --panel-head: rgba(30, 44, 77, 0.35);
+  --ink: #e2e8f0;
+  --ink-dim: #8ba0bf;
+  --ink-faint: #5a6e8f;
+  --accent: #3b82f6;
+  --accent-soft: rgba(59, 130, 246, 0.14);
+  --green: #34d399;
+  --green-soft: rgba(52, 211, 153, 0.13);
+  --amber: #fbbf24;
+  --amber-soft: rgba(251, 191, 36, 0.13);
+  --red: #f87171;
+  --red-soft: rgba(248, 113, 113, 0.13);
+  --purple: #c084fc;
+  --purple-soft: rgba(192, 132, 252, 0.13);
+  --cyan: #22d3ee;
+  --cyan-soft: rgba(34, 211, 238, 0.13);
+  --radius: 8px;
+  --radius-sm: 6px;
+  --font: 'Inter', ui-sans-serif, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+body.nav-open { overflow: hidden; }

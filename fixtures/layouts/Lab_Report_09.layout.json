@@ -1,0 +1,17 @@
+{
+  "docId": "Lab_Report_09",
+  "layoutEngine": [
+    { "name": "panel", "value": "Lipid Panel — Rev 3", "confidence": 0.97, "engine": "layout-engine (mock)" },
+    { "name": "total_cholesterol", "value": "244 mg/dL", "confidence": 0.96, "engine": "layout-engine (mock)" },
+    { "name": "flagged_results", "value": "2", "confidence": 0.95, "engine": "layout-engine (mock)" },
+    { "name": "collected_date", "value": "2026-06-05", "confidence": 0.97, "engine": "layout-engine (mock)" },
+    { "name": "sheet_count", "value": "4", "confidence": 0.99, "engine": "layout-engine (mock)" }
+  ],
+  "visionEngine": [
+    { "name": "panel", "value": "Lipid Panel — Rev 3", "confidence": 0.95, "engine": "vision-engine (mock)" },
+    { "name": "total_cholesterol", "value": "244 mg/dL", "confidence": 0.94, "engine": "vision-engine (mock)" },
+    { "name": "flagged_results", "value": "2", "confidence": 0.93, "engine": "vision-engine (mock)" },
+    { "name": "collected_date", "value": "2026-06-05", "confidence": 0.96, "engine": "vision-engine (mock)" },
+    { "name": "sheet_count", "value": "4", "confidence": 0.98, "engine": "vision-engine (mock)" }
+  ]
+}

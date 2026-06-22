@@ -1,0 +1,14 @@
+{
+  "id": "Claim_2231",
+  "fileName": "RE Claim 2231 — secondary payer (winmail.dat)",
+  "source": "email",
+  "sender": "billing@apexbillingservices.example",
+  "pages": 3,
+  "receivedAgoMin": 33,
+  "bytesHex": "789f3e22a0070000",
+  "patient": "Priya Anand (DOB 1988-09-02, MRN MG-51902)",
+  "extractText": "Claim CLM-2231 from Apex Billing Services LLC, attached inside a legacy Outlook TNEF container. Secondary-payer claim (CMS-1500): billed amount $18,750.00 against authorization PA-7741, date of service 2026-06-30. Remit-to and EOB details on page 3. Please confirm receipt.",
+  "classification": { "type": "Insurance Claim", "confidence": 0.97 },
+  "stageMs": { "ingest": 1300, "validate": 2100, "classify": 1600, "judge": 700, "route": 110 },
+  "piiRedactedTokens": 1
+}

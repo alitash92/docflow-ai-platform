@@ -1,0 +1,14 @@
+{
+  "id": "Intake_Scan_44",
+  "fileName": "intake-form-photo-front-desk.heic",
+  "source": "sms",
+  "sender": "+1 (555) 014-7163 — front desk",
+  "pages": 1,
+  "receivedAgoMin": 21,
+  "bytesHex": "0000001866747970686569630000000068656963",
+  "patient": "Dana Okafor (DOB 1995-12-07, MRN MG-60713)",
+  "extractText": "Patient intake form photo via MMS. New-patient registration page, demographics and insurance card visible, signed consent at bottom. Caption from sender: new patient Dana Okafor checked in, intake page MRN MG-60713 signed, requesting chart creation before the 1pm appointment slot.",
+  "classification": { "type": "Patient Intake", "confidence": 0.93 },
+  "stageMs": { "ingest": 2100, "validate": 1800, "classify": 1500, "judge": 600, "route": 100 },
+  "piiRedactedTokens": 1
+}

@@ -1,0 +1,19 @@
+{
+  "docId": "Prior_Auth_017",
+  "layoutEngine": [
+    { "name": "pa_number", "value": "PA-017", "confidence": 0.98, "engine": "layout-engine (mock)" },
+    { "name": "service", "value": "MRI lumbar spine w/o contrast (CPT 72148)", "confidence": 0.91, "engine": "layout-engine (mock)" },
+    { "name": "authorized_amount", "value": "$46,210.00", "confidence": 0.71, "engine": "layout-engine (mock)" },
+    { "name": "valid_through_days", "value": "21", "confidence": 0.69, "engine": "layout-engine (mock)" },
+    { "name": "payer", "value": "Summit Health Plan", "confidence": 0.94, "engine": "layout-engine (mock)" },
+    { "name": "date_submitted", "value": "2026-06-09", "confidence": 0.95, "engine": "layout-engine (mock)" }
+  ],
+  "visionEngine": [
+    { "name": "pa_number", "value": "PA-017", "confidence": 0.97, "engine": "vision-engine (mock)" },
+    { "name": "service", "value": "MRI lumbar spine w/o contrast (CPT 72148)", "confidence": 0.9, "engine": "vision-engine (mock)" },
+    { "name": "authorized_amount", "value": "$48,210.00", "confidence": 0.88, "engine": "vision-engine (mock)" },
+    { "name": "valid_through_days", "value": "12", "confidence": 0.86, "engine": "vision-engine (mock)" },
+    { "name": "payer", "value": "Summit Health Plan", "confidence": 0.93, "engine": "vision-engine (mock)" },
+    { "name": "date_submitted", "value": "2026-06-09", "confidence": 0.94, "engine": "vision-engine (mock)" }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "Discharge_Summary_3",
+  "fileName": "Discharge_Summary_Cardiology_v2_Rev3.pdf",
+  "source": "email",
+  "sender": "records@meridiangeneral.example",
+  "pages": 34,
+  "receivedAgoMin": 28,
+  "bytesHex": "255044462d312e370a25e2e3cfd30a",
+  "patient": "Priya Anand (DOB 1988-09-02, MRN MG-51902)",
+  "extractText": "DISCHARGE SUMMARY rev 3 — Cardiology inpatient stay. Patient: Priya Anand, MRN MG-51902. Summarizes admission for chest pain, NSTEMI ruled out, discharge medications, and cardiology follow-up. 34 pages including revised medication reconciliation and follow-up exhibits. Attending: Dr. R. Mercer, Meridian General Cardiology.",
+  "classification": { "type": "Discharge Summary", "confidence": 0.96 },
+  "stageMs": { "ingest": 2600, "validate": 4100, "classify": 2300, "judge": 1000, "repair": 1200, "route": 140 },
+  "repairs": {
+    "followup_days": "5",
+    "followup_date": "2027-05-31"
+  },
+  "piiRedactedTokens": 3
+}

@@ -1,0 +1,21 @@
+{
+  "docId": "Referral_0482",
+  "layoutEngine": [
+    { "name": "referral_number", "value": "Referral_0482", "confidence": 0.99, "engine": "layout-engine (mock)" },
+    { "name": "subject", "value": "Cardiology consult — new-onset AFib", "confidence": 0.97, "engine": "layout-engine (mock)" },
+    { "name": "specialty", "value": "Cardiology", "confidence": 0.96, "engine": "layout-engine (mock)" },
+    { "name": "date_requested", "value": "2026-06-18", "confidence": 0.98, "engine": "layout-engine (mock)" },
+    { "name": "care_team_suggested", "value": "Cardiology Intake", "confidence": 0.94, "engine": "layout-engine (mock)" },
+    { "name": "prior_auth_required", "value": "false", "confidence": 0.95, "engine": "layout-engine (mock)" },
+    { "name": "priority", "value": "routine", "confidence": 0.93, "engine": "layout-engine (mock)" }
+  ],
+  "visionEngine": [
+    { "name": "referral_number", "value": "Referral_0482", "confidence": 0.98, "engine": "vision-engine (mock)" },
+    { "name": "subject", "value": "Cardiology consult — new-onset AFib", "confidence": 0.96, "engine": "vision-engine (mock)" },
+    { "name": "specialty", "value": "Cardiology", "confidence": 0.95, "engine": "vision-engine (mock)" },
+    { "name": "date_requested", "value": "2026-06-18", "confidence": 0.97, "engine": "vision-engine (mock)" },
+    { "name": "care_team_suggested", "value": "Cardiology Intake", "confidence": 0.92, "engine": "vision-engine (mock)" },
+    { "name": "prior_auth_required", "value": "false", "confidence": 0.96, "engine": "vision-engine (mock)" },
+    { "name": "priority", "value": "routine", "confidence": 0.94, "engine": "vision-engine (mock)" }
+  ]
+}

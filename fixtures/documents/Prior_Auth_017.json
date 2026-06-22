@@ -1,0 +1,18 @@
+{
+  "id": "Prior_Auth_017",
+  "fileName": "Prior_Auth_017_MRI_Lumbar.pdf",
+  "source": "email",
+  "sender": "auth@summithealthplan.example",
+  "pages": 6,
+  "receivedAgoMin": 14,
+  "bytesHex": "255044462d312e360a25c4e5f2e5",
+  "patient": "Marcus Delgado (DOB 1971-03-14, MRN MG-44821)",
+  "extractText": "PRIOR AUTHORIZATION REQUEST PA-017. Requested service: MRI lumbar spine without contrast (CPT 72148) following six weeks of conservative therapy for persistent radiculopathy. Payer: Summit Health Plan. Member ID and authorized units on the attached scanned page; some clinical justification handwritten on the scanned packet. Submitted by Summit Health Plan utilization management, 2026-06-09. Approved units and effective date partially handwritten on the scan.",
+  "classification": { "type": "Prior Authorization", "confidence": 0.81 },
+  "stageMs": { "ingest": 1500, "validate": 3600, "classify": 1900, "judge": 1100, "repair": 1300, "route": 130 },
+  "repairs": {
+    "authorized_amount": "$48,210.00",
+    "valid_through_days": "12"
+  },
+  "piiRedactedTokens": 1
+}

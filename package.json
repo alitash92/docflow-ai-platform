@@ -1,0 +1,42 @@
+{
+  "name": "docflow-ai-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI Document Intelligence Platform — inbox ingestion, dual-engine OCR merge, confidence-gated smart routing, human review queue, token cost tracking. Mock-first demo: runs fully offline, no API keys.",
+  "author": "Ali T.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "demo": "tsx scripts/demo.ts",
+    "dev:api": "node --env-file-if-exists=.env --import tsx apps/api/src/server.ts",
+    "dev:web": "vite",
+    "build": "vite build",
+    "serve": "npm run build && node --env-file-if-exists=.env --import tsx apps/api/src/server.ts",
+    "start": "node --env-file-if-exists=.env --import tsx apps/api/src/server.ts",
+    "test": "node --import tsx --test test/router.spec.ts test/merge.spec.ts test/pipeline.e2e.spec.ts"
+  },
+  "dependencies": {
+    "express": "4.21.2",
+    "multer": "^1.4.4",
+    "openai": "^4.104.0",
+    "pdfjs-dist": "^4.10.38",
+    "react-router-dom": "^6.30.4",
+    "zod": "3.24.1"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.21",
+    "@types/multer": "^2.1.0",
+    "@types/node": "22.10.5",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "@vitejs/plugin-react": "4.3.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tsx": "4.19.2",
+    "typescript": "5.7.2",
+    "vite": "5.4.11"
+  }
+}
