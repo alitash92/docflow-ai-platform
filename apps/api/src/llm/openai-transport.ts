@@ -26,19 +26,27 @@
 type OpenAICtor = typeof import('openai').default;
 type OpenAIInstance = import('openai').default;
 
-let dispatcherPromise: Promise<unknown | undefined> | null = null;
+let fetchPromise: Promise<typeof globalThis.fetch | undefined> | null = null;
 
 /**
- * Build a connection-fresh undici dispatcher. Returns undefined if undici cannot
- * be imported (older Node), in which case the SDK falls back to global fetch and
- * still benefits from the retry wrapper below.
+ * Build a custom fetch backed by undici with keep-alive effectively disabled.
+ *
+ * IMPORTANT: the OpenAI SDK (v4) does NOT honour `fetchOptions.dispatcher`, and
+ * it does not use undici's *global* dispatcher either — it calls its own fetch.
+ * Both of those were verified to still throw "Premature close" on the affected
+ * host. Injecting a custom `fetch` that routes every request through undici's
+ * `fetch` with our connection-fresh Agent is the approach that actually works
+ * (verified live: 200 OK on the same host that was failing).
+ *
+ * Returns undefined if undici cannot be imported (older Node), in which case the
+ * SDK falls back to its built-in fetch and still benefits from the retry wrapper.
  */
-async function buildDispatcher(): Promise<unknown | undefined> {
-  if (!dispatcherPromise) {
-    dispatcherPromise = (async () => {
+async function buildUndiciFetch(): Promise<typeof globalThis.fetch | undefined> {
+  if (!fetchPromise) {
+    fetchPromise = (async () => {
       try {
-        const { Agent } = (await import('undici')) as typeof import('undici');
-        return new Agent({
+        const undici = (await import('undici')) as typeof import('undici');
+        const dispatcher = new undici.Agent({
           // Effectively disable keep-alive: drop sockets almost immediately so a
           // stale pooled connection can never be reused for the next request.
           keepAliveTimeout: 10,
@@ -49,23 +57,32 @@ async function buildDispatcher(): Promise<unknown | undefined> {
           headersTimeout: 120_000,
           bodyTimeout: 120_000,
         });
+        const undiciFetch = undici.fetch as unknown as typeof globalThis.fetch;
+        return ((input: Parameters<typeof globalThis.fetch>[0], init?: Parameters<typeof globalThis.fetch>[1]) =>
+          undiciFetch(input as never, {
+            ...(init as object),
+            dispatcher,
+          } as never)) as typeof globalThis.fetch;
       } catch {
         return undefined;
       }
     })();
   }
-  return dispatcherPromise;
+  return fetchPromise;
 }
 
-/** Construct a hardened OpenAI client (SDK retries + connection-fresh dispatcher). */
+/**
+ * Construct a hardened OpenAI client: SDK retries + a custom undici-backed fetch
+ * with keep-alive disabled (defeats the "Premature close" socket-reuse bug).
+ */
 export async function createOpenAIClient(apiKey: string): Promise<OpenAIInstance> {
   const mod = await import('openai');
   const OpenAI = mod.default as OpenAICtor;
-  const dispatcher = await buildDispatcher();
+  const customFetch = await buildUndiciFetch();
   return new OpenAI({
     apiKey,
     maxRetries: 4,
-    ...(dispatcher ? { fetchOptions: { dispatcher } as Record<string, unknown> } : {}),
+    ...(customFetch ? { fetch: customFetch } : {}),
   });
 }
 
