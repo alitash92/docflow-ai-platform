@@ -151,7 +151,7 @@ export default function Dashboard() {
   const extractRun = runs.find((r) => r.doc.id === 'Referral_0482') ?? runs[0];
 
   return (
-    <div className="app">
+    <div className="app paper-grain">
       <Sidebar
         inboxCount={runs.length}
         reviewCount={reviewCount}

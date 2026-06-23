@@ -200,7 +200,7 @@ export default function Demo() {
   const flagged = new Set(run?.judge?.flagged ?? []);
 
   return (
-    <div className={`mkt demo-page${freeze ? ' freeze' : ''}`}>
+    <div className={`mkt demo-page paper-grain${freeze ? ' freeze' : ''}`}>
       <MarketingNav />
 
       <main id="main">

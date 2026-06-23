@@ -40,19 +40,27 @@
   position: absolute;
   inset: 0;
   width: 45%;
-  background: linear-gradient(100deg, transparent, rgba(226, 232, 240, 0.05), transparent);
+  background: linear-gradient(100deg, transparent, rgba(13, 125, 114, 0.07), transparent);
   animation: shimmer 2.6s linear infinite;
 }
 
-/* Freeze mode (?screenshot=1) and reduced-motion: pin everything. */
+/* Reveal-on-scroll: elements tagged .reveal fade+rise into view. JS toggles
+   .reveal-in via IntersectionObserver; frozen/reduced-motion shows them flat. */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 620ms cubic-bezier(0.21,0.8,0.32,1), transform 620ms cubic-bezier(0.21,0.8,0.32,1); }
+.reveal-in { opacity: 1; transform: none; }
+
+/* Freeze mode (?screenshot=1) and reduced-motion: pin everything and force
+   any reveal-on-scroll elements fully visible so nothing stays hidden. */
 .freeze *, .freeze *::before, .freeze *::after {
   animation: none !important;
   transition: none !important;
 }
+.freeze .reveal { opacity: 1 !important; transform: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation: none !important;
     transition: none !important;
   }
+  .reveal { opacity: 1 !important; transform: none !important; }
 }

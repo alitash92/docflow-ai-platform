@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import MarketingNav from '../components/MarketingNav';
 import MarketingFooter from '../components/MarketingFooter';
+import { useReveal } from '../anim/useReveal';
 
 const FEATURES = [
   {
@@ -38,8 +39,9 @@ const STEPS = [
 ];
 
 export default function Landing() {
+  const reveal = useReveal<HTMLDivElement>();
   return (
-    <div className="mkt">
+    <div className="mkt paper-grain" ref={reveal}>
       <MarketingNav />
 
       <main id="main">
@@ -49,12 +51,13 @@ export default function Landing() {
           <div className="mkt-container mkt-hero-inner">
             <span className="mkt-eyebrow">Document intelligence · healthcare</span>
             <h1 className="mkt-hero-title">
-              DocFlow AI — Document Intelligence for Healthcare
+              Turn clinical paper into <em>trusted data.</em>
             </h1>
             <p className="mkt-hero-sub">
-              Turn the daily flood of faxes, scans, and PDFs into structured, validated data —
-              with a confidence gate that knows when to ask a human. Built for prior auths,
-              claims, referrals, and clinical documents.
+              DocFlow AI reads the daily flood of faxes, scans, and PDFs, reconciles two OCR
+              engines field by field, and routes only what it&rsquo;s certain of — with a
+              confidence gate that knows when to ask a human. Built for prior auths, claims,
+              referrals, and clinical documents.
             </p>
             <div className="mkt-hero-cta">
               <Link to="/demo" className="btn btn-lg btn-demo">▶ Try the live demo</Link>
@@ -111,15 +114,15 @@ export default function Landing() {
               accepted. Generic OCR gives you text — not trustworthy, routable data.
             </p>
             <div className="mkt-problem-grid">
-              <div className="mkt-problem-card">
+              <div className="mkt-problem-card reveal">
                 <h3>Manual data entry</h3>
                 <p>Staff retype fields off scanned forms — slow, costly, and error-prone.</p>
               </div>
-              <div className="mkt-problem-card">
+              <div className="mkt-problem-card reveal" style={{ transitionDelay: '70ms' }}>
                 <h3>Blind automation</h3>
                 <p>Single-engine OCR auto-fills fields it isn’t sure about, with no gate.</p>
               </div>
-              <div className="mkt-problem-card">
+              <div className="mkt-problem-card reveal" style={{ transitionDelay: '140ms' }}>
                 <h3>No audit trail</h3>
                 <p>When a value is wrong, there’s no record of which engine produced it or why.</p>
               </div>
@@ -136,8 +139,8 @@ export default function Landing() {
               confidence, and only auto-route what’s certain.
             </p>
             <div className="mkt-feature-grid">
-              {FEATURES.map((f) => (
-                <article className="mkt-feature-card" key={f.title}>
+              {FEATURES.map((f, i) => (
+                <article className="mkt-feature-card reveal" key={f.title} style={{ transitionDelay: `${i * 70}ms` }}>
                   <div className="mkt-feature-glyph" aria-hidden="true">{f.glyph}</div>
                   <h3>{f.title}</h3>
                   <p>{f.body}</p>
@@ -153,8 +156,8 @@ export default function Landing() {
             <h2 className="mkt-section-title">How it works</h2>
             <p className="mkt-section-lead">The pipeline, end to end.</p>
             <ol className="mkt-pipeline">
-              {STEPS.map((s) => (
-                <li className="mkt-pipeline-step" key={s.n}>
+              {STEPS.map((s, i) => (
+                <li className="mkt-pipeline-step reveal" key={s.n} style={{ transitionDelay: `${i * 60}ms` }}>
                   <span className="mkt-pipeline-n" aria-hidden="true">{s.n}</span>
                   <h3>{s.title}</h3>
                   <p>{s.body}</p>

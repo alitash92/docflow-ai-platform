@@ -49,7 +49,7 @@ export default function SignUp() {
 
   if (done) {
     return (
-      <div className="mkt">
+      <div className="mkt paper-grain">
         <MarketingNav />
         <main id="main" className="mkt-auth">
           <div className="mkt-auth-card mkt-auth-success">
@@ -80,7 +80,7 @@ export default function SignUp() {
   }
 
   return (
-    <div className="mkt">
+    <div className="mkt paper-grain">
       <MarketingNav />
       <main id="main" className="mkt-auth">
         <div className="mkt-auth-card">

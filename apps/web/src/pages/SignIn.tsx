@@ -34,7 +34,7 @@ export default function SignIn() {
   }
 
   return (
-    <div className="mkt">
+    <div className="mkt paper-grain">
       <MarketingNav />
       <main id="main" className="mkt-auth">
         <div className="mkt-auth-card">

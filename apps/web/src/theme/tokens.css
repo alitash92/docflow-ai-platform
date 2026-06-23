@@ -1,30 +1,74 @@
-/* DocFlow AI design tokens — dark-slate / Inter / blue, 8px radius.
-   This identity is exclusive to this project. */
+/* ════════════════════════════════════════════════════════════════════════
+   DocFlow AI — "Vellum" design system
+   ────────────────────────────────────────────────────────────────────────
+   A warm, archival, clinical-paper identity for healthcare document
+   intelligence. The metaphor: clinical paper becomes trusted, structured
+   data. Calm, precise, editorial — the opposite of generic dark SaaS.
+
+   • Paper / parchment surfaces, deep ink text
+   • Signature clinical TEAL accent + warm APRICOT secondary
+   • Serif display (editorial, journal-like) + system sans for UI
+   • Hairline rules, soft warm shadows, subtle paper grain
+   This identity is exclusive to this project.
+   ════════════════════════════════════════════════════════════════════════ */
 :root {
-  --bg: #0f172a;
-  --bg-raised: #14213b;
-  --panel: #131e36;
-  --panel-border: #1e2c4d;
-  --panel-head: rgba(30, 44, 77, 0.35);
-  --ink: #e2e8f0;
-  --ink-dim: #8ba0bf;
-  --ink-faint: #5a6e8f;
-  --accent: #3b82f6;
-  --accent-soft: rgba(59, 130, 246, 0.14);
-  --green: #34d399;
-  --green-soft: rgba(52, 211, 153, 0.13);
-  --amber: #fbbf24;
-  --amber-soft: rgba(251, 191, 36, 0.13);
-  --red: #f87171;
-  --red-soft: rgba(248, 113, 113, 0.13);
-  --purple: #c084fc;
-  --purple-soft: rgba(192, 132, 252, 0.13);
-  --cyan: #22d3ee;
-  --cyan-soft: rgba(34, 211, 238, 0.13);
-  --radius: 8px;
-  --radius-sm: 6px;
-  --font: 'Inter', ui-sans-serif, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+  /* ── Paper surfaces ─────────────────────────────────────────────── */
+  --bg: #f5f1e8;            /* warm parchment page */
+  --bg-raised: #fbf9f3;     /* lifted paper */
+  --panel: #ffffff;         /* clean filed document */
+  --panel-2: #faf7f0;       /* alt panel / inset */
+  --panel-border: #e6dfce;  /* hairline rule */
+  --panel-border-strong: #d8cfb8;
+  --panel-head: #f7f3ea;
+
+  /* ── Ink ────────────────────────────────────────────────────────── */
+  --ink: #1c2722;           /* near-black ink, warm */
+  --ink-soft: #3c4a43;
+  --ink-dim: #6c7a70;
+  --ink-faint: #9aa499;
+
+  /* ── Signature accent: clinical teal ───────────────────────────── */
+  --accent: #0d7d72;        /* deep teal */
+  --accent-bright: #14b8a6; /* bright teal for fills/glow */
+  --accent-ink: #0a5b54;
+  --accent-soft: rgba(13, 125, 114, 0.10);
+  --accent-line: rgba(13, 125, 114, 0.26);
+
+  /* ── Secondary: warm apricot ────────────────────────────────────── */
+  --apricot: #d96b3f;
+  --apricot-bright: #e8835a;
+  --apricot-soft: rgba(217, 107, 63, 0.11);
+  --apricot-line: rgba(217, 107, 63, 0.30);
+
+  /* ── Semantic (warm-tuned) ──────────────────────────────────────── */
+  --green: #1f8f5f;
+  --green-soft: rgba(31, 143, 95, 0.12);
+  --green-line: rgba(31, 143, 95, 0.34);
+  --amber: #c0840d;
+  --amber-soft: rgba(192, 132, 13, 0.13);
+  --amber-line: rgba(192, 132, 13, 0.36);
+  --red: #c2453a;
+  --red-soft: rgba(194, 69, 58, 0.11);
+  --red-line: rgba(194, 69, 58, 0.34);
+  --purple: #7c5cc4;
+  --purple-soft: rgba(124, 92, 196, 0.12);
+  --cyan: #0d8aa3;
+  --cyan-soft: rgba(13, 138, 163, 0.12);
+
+  /* ── Shape + shadow ─────────────────────────────────────────────── */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 18px;
+  --shadow-sm: 0 1px 2px rgba(40, 32, 16, 0.05), 0 2px 6px rgba(40, 32, 16, 0.04);
+  --shadow: 0 2px 4px rgba(40, 32, 16, 0.05), 0 8px 24px rgba(40, 32, 16, 0.07);
+  --shadow-lg: 0 6px 14px rgba(40, 32, 16, 0.08), 0 24px 60px rgba(40, 32, 16, 0.12);
+
+  /* ── Type ───────────────────────────────────────────────────────── */
+  --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua',
+    Georgia, 'Times New Roman', serif;
+  --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,7 +79,21 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font);
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 body.nav-open { overflow: hidden; }
+
+/* Paper grain — a faint warm fibre texture layered behind every page.
+   Pure CSS (no external assets); near-invisible but kills the flat feel. */
+.paper-grain::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(120, 96, 50, 0.035) 0, transparent 38%),
+    radial-gradient(circle at 82% 18%, rgba(13, 125, 114, 0.030) 0, transparent 42%),
+    radial-gradient(circle at 65% 88%, rgba(217, 107, 63, 0.028) 0, transparent 46%);
+}

@@ -43,7 +43,7 @@ export default function Contact() {
   }
 
   return (
-    <div className="mkt">
+    <div className="mkt paper-grain">
       <MarketingNav />
       <main id="main" className="mkt-contact">
         <div className="mkt-container mkt-contact-grid">
