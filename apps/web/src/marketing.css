@@ -29,8 +29,9 @@
 /* ── Nav ─────────────────────────────────────────────────────────────────── */
 .mkt-nav {
   position: sticky; top: 0; z-index: 30;
-  background: rgba(247, 243, 234, 0.82);
-  backdrop-filter: saturate(1.4) blur(12px);
+  background: rgba(244, 247, 248, 0.88);
+  backdrop-filter: saturate(1.6) blur(14px);
+  -webkit-backdrop-filter: saturate(1.6) blur(14px);
   border-bottom: 1px solid var(--panel-border);
 }
 .mkt-nav-inner {
@@ -93,6 +94,7 @@
   background: var(--panel); border: 1px solid var(--accent-line);
   padding: 7px 14px; border-radius: 999px; margin-bottom: 24px;
   box-shadow: var(--shadow-sm);
+  max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .mkt-eyebrow::before {
   content: ''; width: 7px; height: 7px; border-radius: 50%;
@@ -561,7 +563,7 @@
   .mkt-nav-links {
     position: absolute; top: 66px; left: 0; right: 0;
     flex-direction: column; align-items: stretch; gap: 4px;
-    background: rgba(247, 243, 234, 0.98); backdrop-filter: blur(12px);
+    background: rgba(244, 247, 248, 0.98); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--panel-border);
     padding: 14px 28px 20px; display: none; box-shadow: var(--shadow);
   }
