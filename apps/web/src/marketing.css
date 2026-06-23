@@ -223,6 +223,196 @@
   font-size: 12px; color: var(--ink-faint);
 }
 
+/* ── Deep hero section ────────────────────────────────────────────────────── */
+.mkt-hero-deep {
+  background: var(--deep);
+  padding: 88px 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+.mkt-hero-deep-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(900px 600px at 15% 30%, rgba(15,174,147,0.14), transparent 60%),
+    radial-gradient(700px 500px at 85% 70%, rgba(91,108,255,0.12), transparent 60%);
+}
+.mkt-hero-deep-grid {
+  display: grid;
+  grid-template-columns: 1fr 540px;
+  gap: 48px;
+  align-items: center;
+}
+.mkt-hero-deep-copy { max-width: 560px; }
+.mkt-hero-deep-anim { display: flex; align-items: center; justify-content: center; }
+
+/* Text on deep background */
+.mkt-eyebrow.on-deep {
+  color: var(--accent-bright);
+  background: rgba(46,230,197,0.10);
+  border-color: rgba(46,230,197,0.28);
+}
+.mkt-hero-title.on-deep { color: var(--deep-ink); }
+.mkt-hero-sub.on-deep { color: var(--deep-dim); }
+.mkt-hero-note.on-deep { color: var(--deep-dim); opacity: 0.7; }
+.mkt-hero-stats.on-deep { border-color: var(--deep-border); }
+.mkt-hero-stats.on-deep .mkt-stat-v { color: var(--deep-ink); }
+.mkt-hero-stats.on-deep .mkt-stat-l { color: var(--deep-dim); }
+.btn.ghost.on-deep {
+  border-color: rgba(255,255,255,0.25);
+  color: var(--deep-ink);
+  background: rgba(255,255,255,0.06);
+}
+.btn.ghost.on-deep:hover:not(:disabled) {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.4);
+}
+
+/* Responsive hero */
+@media (max-width: 960px) {
+  .mkt-hero-deep-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .mkt-hero-deep-anim { max-width: 480px; margin: 0 auto; }
+}
+
+/* ── Problem stat pill ────────────────────────────────────────────────────── */
+.mkt-problem-stat {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--apricot);
+  background: var(--apricot-soft);
+  border: 1px solid var(--apricot-line);
+  padding: 4px 10px;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+/* ── Audience section ─────────────────────────────────────────────────────── */
+.mkt-audience { background: var(--panel-2); border-top: 1px solid var(--panel-border); border-bottom: 1px solid var(--panel-border); }
+.mkt-audience-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.mkt-audience-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-lg);
+  padding: 28px 26px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+.mkt-audience-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--accent-line); }
+.mkt-audience-glyph {
+  width: 52px; height: 52px; border-radius: 14px; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 700;
+  background: var(--accent-soft); color: var(--accent);
+  border: 1px solid var(--accent-line);
+}
+.mkt-audience-card h3 { font-family: var(--serif); font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+.mkt-audience-card p { font-size: 14.5px; color: var(--ink-dim); line-height: 1.6; }
+@media (max-width: 760px) { .mkt-audience-grid { grid-template-columns: 1fr; } }
+
+/* ── Doc types section ────────────────────────────────────────────────────── */
+.mkt-docs { background: var(--panel-2); border-top: 1px solid var(--panel-border); }
+.mkt-docs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mkt-doc-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+.mkt-doc-card:hover { transform: translateY(-2px); border-color: var(--accent-line); }
+.mkt-doc-glyph {
+  font-size: 22px; flex: none; width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-soft); border: 1px solid var(--accent-line); border-radius: 11px;
+  color: var(--accent);
+}
+.mkt-doc-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.mkt-doc-card p { font-size: 13px; color: var(--ink-dim); line-height: 1.5; }
+@media (max-width: 760px) { .mkt-docs-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .mkt-docs-grid { grid-template-columns: 1fr; } }
+
+/* ── Pricing section ──────────────────────────────────────────────────────── */
+.mkt-pricing { background: var(--deep); }
+.mkt-pricing .mkt-section-title { color: var(--deep-ink); }
+.mkt-pricing .mkt-section-lead { color: var(--deep-dim); }
+.mkt-pricing-illus { font-size: 11.5px; color: var(--deep-dim); opacity: 0.7; font-style: italic; }
+.mkt-pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+.mkt-tier {
+  background: var(--deep-2);
+  border: 1px solid var(--deep-border);
+  border-radius: var(--radius-lg);
+  padding: 28px 26px 26px;
+  position: relative;
+  box-shadow: 0 8px 28px rgba(4,12,16,0.36);
+}
+.mkt-tier.featured {
+  background: var(--deep-3);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 16px 44px rgba(15,174,147,0.22);
+}
+.mkt-tier-flag {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--accent-bright); color: #061318; font-size: 11px; font-weight: 800;
+  padding: 4px 14px; border-radius: 999px; white-space: nowrap; letter-spacing: 0.04em;
+}
+.mkt-tier-name { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--deep-dim); margin-bottom: 14px; }
+.mkt-tier-price { display: flex; align-items: baseline; gap: 7px; margin-bottom: 10px; }
+.mkt-tier-amount { font-family: var(--serif); font-size: 44px; font-weight: 600; letter-spacing: -0.03em; color: var(--deep-ink); }
+.mkt-tier-unit { font-size: 13.5px; color: var(--deep-dim); }
+.mkt-tier-blurb { font-size: 14px; color: var(--deep-dim); margin-bottom: 20px; line-height: 1.55; }
+.mkt-tier-feats {
+  list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;
+}
+.mkt-tier-feats li {
+  font-size: 13.5px; color: var(--deep-ink); padding-left: 20px; position: relative; line-height: 1.45;
+}
+.mkt-tier-feats li::before {
+  content: '✓'; position: absolute; left: 0; color: var(--accent-bright); font-weight: 800; font-size: 11px;
+}
+.mkt-tier .btn-block.ghost { border-color: var(--deep-border); color: var(--deep-dim); background: transparent; }
+.mkt-tier .btn-block.ghost:hover:not(:disabled) { border-color: var(--accent); color: var(--accent-bright); background: rgba(46,230,197,0.08); }
+@media (max-width: 860px) { .mkt-pricing-grid { grid-template-columns: 1fr; max-width: 420px; } }
+
+/* ── Trust section ────────────────────────────────────────────────────────── */
+.mkt-trust { border-top: 1px solid var(--panel-border); }
+.mkt-trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.mkt-trust-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-lg);
+  padding: 28px 26px;
+  box-shadow: var(--shadow-sm);
+}
+.mkt-trust-glyph {
+  font-size: 26px; margin-bottom: 16px;
+  width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
+  background: var(--indigo-soft); border: 1px solid var(--indigo-line); border-radius: 14px;
+}
+.mkt-trust-card h3 { font-family: var(--serif); font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+.mkt-trust-card p { font-size: 14.5px; color: var(--ink-dim); line-height: 1.6; }
+@media (max-width: 760px) { .mkt-trust-grid { grid-template-columns: 1fr; } }
+
+/* ── How-it-works CTA ─────────────────────────────────────────────────────── */
+.mkt-how-cta { margin-top: 32px; }
+
+/* ── Reveal-on-scroll ─────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 480ms cubic-bezier(0.2, 0.8, 0.3, 1), transform 480ms cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+.reveal.reveal-in { opacity: 1; transform: none; }
+
 /* ── Auth / contact cards ─────────────────────────────────────────────────── */
 .mkt-auth { display: flex; align-items: center; justify-content: center; padding: 64px 24px; }
 .mkt-auth-card {

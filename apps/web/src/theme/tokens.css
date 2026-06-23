@@ -1,79 +1,100 @@
 /* ════════════════════════════════════════════════════════════════════════
-   DocFlow AI — "Vellum" design system
+   DocFlow AI — "Vital" design system
    ────────────────────────────────────────────────────────────────────────
-   A warm, archival, clinical-paper identity for healthcare document
-   intelligence. The metaphor: clinical paper becomes trusted, structured
-   data. Calm, precise, editorial — the opposite of generic dark SaaS.
+   A confident, modern health-tech identity for AI document extraction in
+   healthcare operations. Clean clinical-white working surfaces, deep
+   "midnight ink" command surfaces for hero/CTA, and a signature electric
+   MINT accent paired with a trustworthy INDIGO secondary.
 
-   • Paper / parchment surfaces, deep ink text
-   • Signature clinical TEAL accent + warm APRICOT secondary
-   • Serif display (editorial, journal-like) + system sans for UI
-   • Hairline rules, soft warm shadows, subtle paper grain
+   The metaphor: faxed/scanned medical paperwork → structured, confidence-
+   scored data, routed automatically. Vivid but trustworthy.
+
+   • Clean light surfaces (clinical white) + deep ink command surfaces
+   • Signature electric MINT accent + INDIGO secondary
+   • System sans display at a strong type scale (no serif, no web fonts)
+   • Motion-forward: a live pipeline animation drives the identity
    This identity is exclusive to this project.
    ════════════════════════════════════════════════════════════════════════ */
 :root {
-  /* ── Paper surfaces ─────────────────────────────────────────────── */
-  --bg: #f5f1e8;            /* warm parchment page */
-  --bg-raised: #fbf9f3;     /* lifted paper */
-  --panel: #ffffff;         /* clean filed document */
-  --panel-2: #faf7f0;       /* alt panel / inset */
-  --panel-border: #e6dfce;  /* hairline rule */
-  --panel-border-strong: #d8cfb8;
-  --panel-head: #f7f3ea;
+  /* ── Light working surfaces ─────────────────────────────────────── */
+  --bg: #f4f7f8;            /* cool clinical page */
+  --bg-raised: #fbfdfd;
+  --panel: #ffffff;         /* clean card */
+  --panel-2: #f3f6f7;       /* alt panel / inset */
+  --panel-border: #e3e9eb;  /* hairline rule */
+  --panel-border-strong: #d2dbde;
+  --panel-head: #f7fafa;
 
-  /* ── Ink ────────────────────────────────────────────────────────── */
-  --ink: #1c2722;           /* near-black ink, warm */
-  --ink-soft: #3c4a43;
-  --ink-dim: #6c7a70;
-  --ink-faint: #9aa499;
+  /* ── Ink (cool, near-black) ─────────────────────────────────────── */
+  --ink: #0c1b22;           /* deep slate ink */
+  --ink-soft: #324049;
+  --ink-dim: #5e6f78;
+  --ink-faint: #93a3ab;
 
-  /* ── Signature accent: clinical teal ───────────────────────────── */
-  --accent: #0d7d72;        /* deep teal */
-  --accent-bright: #14b8a6; /* bright teal for fills/glow */
-  --accent-ink: #0a5b54;
-  --accent-soft: rgba(13, 125, 114, 0.10);
-  --accent-line: rgba(13, 125, 114, 0.26);
+  /* ── Deep "command" surface (hero / CTA / footer) ───────────────── */
+  --deep: #061318;          /* midnight ink */
+  --deep-2: #0b2027;        /* lifted midnight */
+  --deep-3: #103039;        /* card on midnight */
+  --deep-border: rgba(120, 220, 205, 0.16);
+  --deep-ink: #e9f4f3;      /* text on deep */
+  --deep-dim: #8fb0ad;      /* dim text on deep */
 
-  /* ── Secondary: warm apricot ────────────────────────────────────── */
-  --apricot: #d96b3f;
-  --apricot-bright: #e8835a;
-  --apricot-soft: rgba(217, 107, 63, 0.11);
-  --apricot-line: rgba(217, 107, 63, 0.30);
+  /* ── Signature accent: electric mint ────────────────────────────── */
+  --accent: #0fae93;        /* deep mint (readable on white) */
+  --accent-bright: #2ee6c5; /* electric mint for fills/glow */
+  --accent-ink: #0b7f6c;
+  --accent-soft: rgba(15, 174, 147, 0.10);
+  --accent-line: rgba(15, 174, 147, 0.26);
 
-  /* ── Semantic (warm-tuned) ──────────────────────────────────────── */
-  --green: #1f8f5f;
-  --green-soft: rgba(31, 143, 95, 0.12);
-  --green-line: rgba(31, 143, 95, 0.34);
-  --amber: #c0840d;
-  --amber-soft: rgba(192, 132, 13, 0.13);
-  --amber-line: rgba(192, 132, 13, 0.36);
-  --red: #c2453a;
-  --red-soft: rgba(194, 69, 58, 0.11);
-  --red-line: rgba(194, 69, 58, 0.34);
+  /* ── Secondary: indigo ──────────────────────────────────────────── */
+  --indigo: #5b6cff;
+  --indigo-bright: #8290ff;
+  --indigo-soft: rgba(91, 108, 255, 0.10);
+  --indigo-line: rgba(91, 108, 255, 0.28);
+
+  /* legacy alias (apricot → indigo) so older rules stay coherent */
+  --apricot: var(--indigo);
+  --apricot-bright: var(--indigo-bright);
+  --apricot-soft: var(--indigo-soft);
+  --apricot-line: var(--indigo-line);
+
+  /* ── Semantic ───────────────────────────────────────────────────── */
+  --green: #12a76a;
+  --green-soft: rgba(18, 167, 106, 0.12);
+  --green-line: rgba(18, 167, 106, 0.34);
+  --amber: #c98a06;
+  --amber-soft: rgba(201, 138, 6, 0.13);
+  --amber-line: rgba(201, 138, 6, 0.36);
+  --red: #d34a3e;
+  --red-soft: rgba(211, 74, 62, 0.11);
+  --red-line: rgba(211, 74, 62, 0.34);
   --purple: #7c5cc4;
   --purple-soft: rgba(124, 92, 196, 0.12);
   --cyan: #0d8aa3;
   --cyan-soft: rgba(13, 138, 163, 0.12);
 
-  /* ── Shape + shadow ─────────────────────────────────────────────── */
-  --radius: 12px;
-  --radius-sm: 8px;
-  --radius-lg: 18px;
-  --shadow-sm: 0 1px 2px rgba(40, 32, 16, 0.05), 0 2px 6px rgba(40, 32, 16, 0.04);
-  --shadow: 0 2px 4px rgba(40, 32, 16, 0.05), 0 8px 24px rgba(40, 32, 16, 0.07);
-  --shadow-lg: 0 6px 14px rgba(40, 32, 16, 0.08), 0 24px 60px rgba(40, 32, 16, 0.12);
+  /* ── Shape + shadow (cool-tuned) ────────────────────────────────── */
+  --radius: 14px;
+  --radius-sm: 9px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 2px rgba(12, 27, 34, 0.05), 0 2px 8px rgba(12, 27, 34, 0.05);
+  --shadow: 0 2px 6px rgba(12, 27, 34, 0.06), 0 12px 30px rgba(12, 27, 34, 0.09);
+  --shadow-lg: 0 8px 18px rgba(12, 27, 34, 0.10), 0 30px 70px rgba(12, 27, 34, 0.16);
+  --shadow-accent: 0 8px 26px rgba(15, 174, 147, 0.34);
 
-  /* ── Type ───────────────────────────────────────────────────────── */
+  /* ── Type (system stacks only) ──────────────────────────────────── */
   --font: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
-  --serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua',
-    Georgia, 'Times New Roman', serif;
+  /* display = same stack, used heavy + tight; no serif/web fonts */
+  --serif: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body, #root { height: 100%; }
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
@@ -87,13 +108,15 @@ body {
 }
 body.nav-open { overflow: hidden; }
 
-/* Paper grain — a faint warm fibre texture layered behind every page.
-   Pure CSS (no external assets); near-invisible but kills the flat feel. */
+/* Subtle ambient grain — a faint cool wash layered behind every page. */
 .paper-grain::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background-image:
-    radial-gradient(circle at 18% 22%, rgba(120, 96, 50, 0.035) 0, transparent 38%),
-    radial-gradient(circle at 82% 18%, rgba(13, 125, 114, 0.030) 0, transparent 42%),
-    radial-gradient(circle at 65% 88%, rgba(217, 107, 63, 0.028) 0, transparent 46%);
+    radial-gradient(circle at 16% 18%, rgba(15, 174, 147, 0.04) 0, transparent 40%),
+    radial-gradient(circle at 86% 12%, rgba(91, 108, 255, 0.035) 0, transparent 44%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
