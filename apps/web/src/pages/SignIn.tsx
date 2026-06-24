@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import MarketingNav from '../components/MarketingNav';
 import MarketingFooter from '../components/MarketingFooter';
@@ -7,6 +7,11 @@ import { useAuth } from '../auth';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function SignIn() {
+  useEffect(() => {
+    document.title = 'Sign In — DocFlow AI';
+    return () => { document.title = 'DocFlow AI — AI document extraction for healthcare ops'; };
+  }, []);
+
   const navigate = useNavigate();
   const { signIn } = useAuth();
   const [email, setEmail] = useState('');

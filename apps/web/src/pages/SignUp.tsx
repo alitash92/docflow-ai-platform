@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import MarketingNav from '../components/MarketingNav';
 import MarketingFooter from '../components/MarketingFooter';
@@ -14,6 +14,11 @@ interface Fields {
 }
 
 export default function SignUp() {
+  useEffect(() => {
+    document.title = 'Get Started — DocFlow AI';
+    return () => { document.title = 'DocFlow AI — AI document extraction for healthcare ops'; };
+  }, []);
+
   const navigate = useNavigate();
   const { signIn } = useAuth();
   const [f, setF] = useState<Fields>({ name: '', email: '', company: '', password: '' });

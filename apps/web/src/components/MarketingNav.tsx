@@ -38,6 +38,7 @@ export default function MarketingNav() {
         <nav className={`mkt-nav-links${open ? ' open' : ''}`} aria-label="Primary">
           <a href="/#features" onClick={() => setOpen(false)}>Features</a>
           <a href="/#how" onClick={() => setOpen(false)}>How it works</a>
+          <a href="/#pricing" onClick={() => setOpen(false)}>Pricing</a>
           <NavLink to="/contact" onClick={() => setOpen(false)}>Contact</NavLink>
           <NavLink to="/demo" className="mkt-nav-demo" onClick={() => setOpen(false)}>
             ▶ Try the demo

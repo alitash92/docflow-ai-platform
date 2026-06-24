@@ -70,6 +70,11 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
+    document.title = 'Dashboard — DocFlow AI';
+    return () => { document.title = 'DocFlow AI — AI document extraction for healthcare ops'; };
+  }, []);
+
+  useEffect(() => {
     if (freeze) document.body.classList.add('freeze');
   }, [freeze]);
 
@@ -145,7 +150,7 @@ export default function Dashboard() {
   const reviewCount = runs.filter((r) => r.route?.decision === 'human-review').length;
   const totalCost = runs.reduce((a, r) => a + r.costUsd, 0);
   // The pipeline replay panel shows the discharge-summary run — it exercises the
-  // full Judge → Repair path (2 cross-engine disagreements repaired).
+  // full Quality-Check → Correct path (2 cross-engine disagreements corrected).
   const pipelineRun = runs.find((r) => r.doc.id === 'Discharge_Summary_3') ?? runs[0];
   // The validated-output panel shows the freshest auto-routed document.
   const extractRun = runs.find((r) => r.doc.id === 'Referral_0482') ?? runs[0];
@@ -176,7 +181,7 @@ export default function Dashboard() {
               <h1>Document Intelligence Dashboard</h1>
               <div className="sub">
                 <span className="live-dot" />
-                Meridian General — Provider Network · pipeline replay · Thursday, 11 Jun
+                Meridian General — Provider Network · pipeline replay · fixture run #042
               </div>
             </div>
           </div>
@@ -195,24 +200,31 @@ export default function Dashboard() {
               style={{ display: 'none' }}
               onChange={onPickFile}
             />
-            <button
-              className="btn"
-              disabled={!realMode || uploading}
-              title={
-                realMode
-                  ? 'Upload a document for live extraction'
-                  : 'Document upload runs only in real mode (set MOCK_MODE=false + OPENAI_API_KEY)'
-              }
-              onClick={() => fileInputRef.current?.click()}
-            >
-              {uploading ? (
-                <>
-                  <span className="spinner" aria-hidden="true" /> Extracting…
-                </>
-              ) : (
-                '+ Upload documents'
+            <div className="top-upload-wrap">
+              <button
+                className="btn"
+                disabled={!realMode || uploading}
+                title={
+                  realMode
+                    ? 'Upload a document for live extraction'
+                    : 'Document upload runs only in real mode (set MOCK_MODE=false + OPENAI_API_KEY)'
+                }
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {uploading ? (
+                  <>
+                    <span className="spinner" aria-hidden="true" /> Extracting…
+                  </>
+                ) : (
+                  '+ Upload documents'
+                )}
+              </button>
+              {!realMode && (
+                <div className="top-upload-note">
+                  Upload runs in the full build with an API key — <a href="/demo">try the pipeline on the Demo page</a>.
+                </div>
               )}
-            </button>
+            </div>
             <div className="top-user">
               <span className="top-user-name" title={user?.email}>
                 {user?.name ?? 'Demo Reviewer'}

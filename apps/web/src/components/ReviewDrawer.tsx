@@ -26,7 +26,7 @@ export default function ReviewDrawer({ run, onClose }: Props) {
           <button className="drawer-close" aria-label="Close review" onClick={onClose}>
             ✕
           </button>
-          <div className="drawer-kicker">Human review · escalated by routing gate</div>
+          <div className="drawer-kicker">Human review · flagged by routing gate</div>
           <div className="drawer-title">{run.doc.fileName}</div>
           <div className="drawer-sub">
             {run.classification?.type} · {run.doc.pages} pages · from {run.doc.sender} ·{' '}
@@ -39,8 +39,7 @@ export default function ReviewDrawer({ run, onClose }: Props) {
             <div className="big">{conf.toFixed(2)}</div>
             <div className="why">
               <b>Below the 0.90 auto-route threshold.</b> {run.route?.reason}. The two OCR
-              engines disagreed on {flagged.size} field{flagged.size === 1 ? '' : 's'}; Repair
-              resolved the values, but doc-level confidence stayed under the gate — so a human
+              engines disagreed on {flagged.size} field{flagged.size === 1 ? '' : 's'}; a correction pass resolved the values, but doc-level confidence stayed under the gate — so a human
               decides, not the model.
             </div>
           </div>
@@ -56,7 +55,7 @@ export default function ReviewDrawer({ run, onClose }: Props) {
               <div className={`field-row${f.repaired ? ' flagged' : ''}`} key={f.name}>
                 <span className="fname">{f.name}</span>
                 <span className="fval">
-                  {f.repaired && <span className="repair-tag">REPAIRED</span>}
+                  {f.repaired && <span className="repair-tag">CORRECTED</span>}
                   {f.value}
                 </span>
                 <span className="fengine">

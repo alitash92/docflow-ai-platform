@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import MarketingNav from '../components/MarketingNav';
 import MarketingFooter from '../components/MarketingFooter';
@@ -12,6 +12,11 @@ interface Fields {
 }
 
 export default function Contact() {
+  useEffect(() => {
+    document.title = 'Contact — DocFlow AI';
+    return () => { document.title = 'DocFlow AI — AI document extraction for healthcare ops'; };
+  }, []);
+
   const [f, setF] = useState<Fields>({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
   const [busy, setBusy] = useState(false);
@@ -48,7 +53,7 @@ export default function Contact() {
       <main id="main" className="mkt-contact">
         <div className="mkt-container mkt-contact-grid">
           <div className="mkt-contact-intro">
-            <span className="mkt-eyebrow">Be a part</span>
+            <span className="mkt-eyebrow">Get in touch</span>
             <h1>Get in touch</h1>
             <p>
               Want to talk about document intelligence for your team, kick the tyres on the

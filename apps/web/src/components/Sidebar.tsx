@@ -90,6 +90,10 @@ export default function Sidebar({
         })}
       </nav>
 
+      <div className="sidebar-full-hint">
+        Greyed items are available in the full platform.
+      </div>
+
       <div className="sidebar-foot">
         <div><span className="ok">●</span> mock engines · zero keys</div>
         <div>deterministic fixture run #042</div>

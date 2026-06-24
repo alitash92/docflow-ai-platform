@@ -3,16 +3,16 @@ import type { PipelineState } from '../api';
 
 const STAGE_LABELS: Record<string, string> = {
   ingest: 'Ingest & Decode',
-  validate: 'Validate — OCR Merge',
+  validate: 'Read — OCR Merge',
   classify: 'Classify & Extract',
-  judge: 'Judge',
-  repair: 'Repair',
-  route: 'Route or Escalate',
+  judge: 'Quality Check',
+  repair: 'Correct',
+  route: 'Route or Flag for Review',
 };
 
-/** 12s looping replay of the recorded fixture run. Freeze pins it mid-Judge. */
+/** 12s looping replay of the recorded fixture run. Freeze pins it mid-Quality-Check. */
 const LOOP_MS = 12_000;
-const FREEZE_PROGRESS = 0.74; // mid-Judge on the seed run
+const FREEZE_PROGRESS = 0.74; // mid-Quality-Check on the seed run
 
 interface Props {
   run: PipelineState;

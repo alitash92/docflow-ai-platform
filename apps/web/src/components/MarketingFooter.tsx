@@ -33,7 +33,7 @@ export default function MarketingFooter() {
         <nav className="mkt-footer-col" aria-label="Company">
           <h4>Company</h4>
           <Link to="/contact">Contact</Link>
-          <Link to="/contact">Be a part</Link>
+          <Link to="/demo">Live demo</Link>
         </nav>
       </div>
       <div className="mkt-footer-base">

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import MarketingNav from '../components/MarketingNav';
 import MarketingFooter from '../components/MarketingFooter';
@@ -79,12 +79,40 @@ const TIERS = [
 
 /* Trust / security — PHI, confidence gate, human-in-the-loop. */
 const TRUST = [
-  { glyph: '🛡', title: 'Built for PHI', body: 'PII is detected and redacted at ingest before anything is logged. Designed for healthcare data handling from the first byte.' },
+  { glyph: '🛡', title: 'Built for PHI', body: 'PII is detected and redacted at ingest before anything is logged. Designed for healthcare data handling from the first byte. In this demo all data is synthetic — nothing is sent to external services or stored.' },
   { glyph: '◐', title: 'Confidence-gated', body: 'Nothing uncertain is auto-accepted. A single, unit-tested gate decides what is safe to route and what a person must see.' },
   { glyph: '✓', title: 'Human in the loop', body: 'Borderline fields land in a review queue with side-by-side engine evidence — a person approves the exact values that matter.' },
 ];
 
+/* FAQ */
+const FAQ = [
+  {
+    q: 'What happens if the AI is wrong?',
+    a: 'Any field below the confidence threshold is held for human review — it never auto-routes. Where the two OCR engines disagreed, both readings are shown side by side so the reviewer sees exactly where the uncertainty came from.',
+  },
+  {
+    q: 'What file formats does it handle?',
+    a: 'PDF, images (JPEG, PNG, WebP, HEIC), CSV, and spreadsheets (XLSX/DOCX). Faxes and legacy formats are accepted — the source channel is recorded at ingest.',
+  },
+  {
+    q: 'How accurate is the extraction?',
+    a: 'Accuracy depends on document quality. Rather than citing a headline number, the pipeline makes its uncertainty explicit: every field carries its own confidence score, and the confidence gate (≥ 0.90) decides what\'s safe to auto-route. Uncertain fields always go to a person.',
+  },
+  {
+    q: 'Does it handle faxes and scans?',
+    a: 'Yes. The ingest stage detects the source channel (email, fax, portal upload) and records it on every document. Dual-engine OCR handles low-quality scans, stamps, and handwritten fields.',
+  },
+  {
+    q: 'Is it HIPAA-ready?',
+    a: 'The pipeline is designed around PHI handling — PII redaction at ingest, no plain-text logging of patient data, and a full audit trail on every decision. The Network plan includes a BAA on request.',
+  },
+];
+
 export default function Landing() {
+  useEffect(() => {
+    document.title = 'DocFlow AI — AI document extraction for healthcare ops';
+  }, []);
+
   const reveal = useReveal<HTMLDivElement>();
   const reduced = useMemo(
     () =>
@@ -124,10 +152,10 @@ export default function Landing() {
                 First 100 pages free · no credit card · synthetic data in this demo
               </p>
 
-              <div className="mkt-hero-stats on-deep">
-                <div><span className="mkt-stat-v">$0.08</span><span className="mkt-stat-l">per page · usage-based</span></div>
-                <div><span className="mkt-stat-v">≥ 0.90</span><span className="mkt-stat-l">auto-route confidence gate</span></div>
-                <div><span className="mkt-stat-v">6+</span><span className="mkt-stat-l">document types handled</span></div>
+              <div className="mkt-hero-stats on-deep mkt-hero-stats-3">
+                <div><span className="mkt-stat-v">≥ 0.90</span><span className="mkt-stat-l">gate holds uncertain fields</span></div>
+                <div><span className="mkt-stat-v">every</span><span className="mkt-stat-l">decision in the audit trail</span></div>
+                <div><span className="mkt-stat-v">per-doc</span><span className="mkt-stat-l">cost tracked from token usage</span></div>
               </div>
             </div>
 
@@ -148,17 +176,17 @@ export default function Landing() {
             </p>
             <div className="mkt-problem-grid">
               <div className="mkt-problem-card reveal">
-                <div className="mkt-problem-stat">hours / day</div>
+                <div className="mkt-problem-stat">field-by-field re-keying</div>
                 <h3>Manual re-keying</h3>
                 <p>Staff retype patient, member, CPT, and NPI fields off scans — instead of working the cases that need a human.</p>
               </div>
               <div className="mkt-problem-card reveal" style={{ transitionDelay: '80ms' }}>
-                <div className="mkt-problem-stat">costly errors</div>
+                <div className="mkt-problem-stat">one wrong digit = denied claim</div>
                 <h3>Typos become denials</h3>
                 <p>One mistyped member ID or code and the claim bounces — rework, appeals, and delayed revenue.</p>
               </div>
               <div className="mkt-problem-card reveal" style={{ transitionDelay: '160ms' }}>
-                <div className="mkt-problem-stat">no record</div>
+                <div className="mkt-problem-stat">zero provenance on accepted values</div>
                 <h3>No audit trail</h3>
                 <p>When a value is wrong, there's no record of where it came from or why it was accepted.</p>
               </div>
@@ -237,7 +265,7 @@ export default function Landing() {
             <h2 className="mkt-section-title">Simple, usage-based pricing</h2>
             <p className="mkt-section-lead">
               Pay per page, not per seat — costs track your actual volume. Your first 100 pages
-              are free. <span className="mkt-pricing-illus">Pricing shown is illustrative.</span>
+              are free.
             </p>
             <div className="mkt-pricing-grid">
               {TIERS.map((t, i) => (
@@ -264,13 +292,16 @@ export default function Landing() {
                 </article>
               ))}
             </div>
+            <p className="mkt-pricing-illus-note">
+              Pricing shown is illustrative — this is a portfolio demo, not a live product.
+            </p>
           </div>
         </section>
 
         {/* ── Trust / security ──────────────────────────────────────── */}
         <section className="mkt-section mkt-trust">
           <div className="mkt-container">
-            <h2 className="mkt-section-title">Trustworthy by design</h2>
+            <h2 className="mkt-section-title">Nothing uncertain auto-routes. A person stays in control.</h2>
             <p className="mkt-section-lead">
               Healthcare data needs care. DocFlow AI is built so nothing uncertain slips through
               and a person stays in control of the values that matter.
@@ -284,6 +315,21 @@ export default function Landing() {
                 </article>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* ── FAQ ───────────────────────────────────────────────────── */}
+        <section className="mkt-section mkt-faq" id="faq">
+          <div className="mkt-container">
+            <h2 className="mkt-section-title">Common questions</h2>
+            <dl className="mkt-faq-list">
+              {FAQ.map((item, i) => (
+                <div className="mkt-faq-item reveal" key={item.q} style={{ transitionDelay: `${i * 60}ms` }}>
+                  <dt className="mkt-faq-q">{item.q}</dt>
+                  <dd className="mkt-faq-a">{item.a}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
         </section>
 

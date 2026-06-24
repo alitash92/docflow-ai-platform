@@ -14,7 +14,7 @@ import {
    /demo — the guided, public, single-flow walkthrough.
 
    One healthcare document is run through the REAL pipeline at runtime (the same
-   ingest → dual-engine OCR merge → classify → judge → repair → route code the
+   ingest → dual-engine OCR merge → classify → quality check → correct → route code the
    dashboard uses). This page animates through that result stage by stage and
    labels the technique behind each stage. Everything shown is computed —
    nothing here is hard-coded narrative.
@@ -64,14 +64,14 @@ const RAIL: StageDef[] = [
   {
     key: 'judge',
     stages: ['judge'],
-    label: 'Judge',
-    tech: 'LLM self-critique · cross-engine disagreement',
-    blurb: 'A judge pass scores the document and flags fields where the two engines disagreed beyond tolerance — the self-critique loop.',
+    label: 'Quality Check',
+    tech: 'LLM cross-check · cross-engine disagreement',
+    blurb: 'A quality-check pass scores the document and flags fields where the two engines disagreed beyond tolerance.',
   },
   {
     key: 'repair',
     stages: ['repair'],
-    label: 'Repair',
+    label: 'Correct',
     tech: 'Targeted re-extraction of flagged fields',
     blurb: 'Only the flagged fields are re-extracted and corrected, then merged back. Clean fields are never touched.',
   },
@@ -80,7 +80,7 @@ const RAIL: StageDef[] = [
     stages: ['route'],
     label: 'Route',
     tech: 'Confidence gate ≥ 0.90 · auto-route or human review',
-    blurb: 'A single, unit-tested gate reads the judge score. At or above the threshold the document auto-routes; anything uncertain is held for a human.',
+    blurb: 'A single, unit-tested gate reads the quality-check score. At or above the threshold the document auto-routes; anything uncertain is held for a human.',
   },
 ];
 
@@ -90,7 +90,7 @@ const SAMPLES = [
   { id: 'Lab_Report_09', label: 'Lab Report', note: 'multi-analyte panel' },
 ];
 
-const STEP_MS = 1150; // per-stage dwell while auto-playing
+const STEP_MS = 1700; // per-stage dwell while auto-playing
 
 function pct(n: number) {
   return `${Math.round(n * 100)}%`;
@@ -103,6 +103,11 @@ function confClass(c: number) {
 }
 
 export default function Demo() {
+  useEffect(() => {
+    document.title = 'Live Demo — DocFlow AI';
+    return () => { document.title = 'DocFlow AI — AI document extraction for healthcare ops'; };
+  }, []);
+
   const freeze = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     return (
@@ -187,7 +192,6 @@ export default function Demo() {
   }
 
   const sample = SAMPLES.find((s) => s.id === docId) ?? SAMPLES[0];
-  const reachedExtract = active >= RAIL.findIndex((r) => r.key === 'extract');
   const reachedRoute = active >= RAIL.length - 1;
 
   // Stage timing/detail by pipeline stage name, for the active rail node.
@@ -212,9 +216,8 @@ export default function Demo() {
             <h1 className="demo-title">Watch the pipeline run on a real document</h1>
             <p className="demo-sub">
               One synthetic healthcare document, run through the actual pipeline at runtime —
-              ingestion, dual-engine OCR, a frontier vision LLM, a judge/repair loop, and a
-              confidence-gated routing decision. This is a minimal version of a production system;
-              every value below is computed live, not scripted.
+              ingestion, dual-engine OCR, a frontier vision LLM, and a
+              confidence-gated routing decision.
             </p>
 
             <div className="demo-doc-picker" role="group" aria-label="Choose a sample document">
@@ -236,7 +239,7 @@ export default function Demo() {
         <section className="mkt-container demo-body">
           {error && (
             <div className="demo-error" role="alert">
-              Could not reach the live pipeline ({error}). Make sure the API is running.
+              The live pipeline is temporarily unavailable — the demo fixtures are loaded, so you can still step through the extraction below.
             </div>
           )}
 
@@ -285,7 +288,6 @@ export default function Demo() {
                   engines={engines}
                   sample={sample}
                   flagged={flagged}
-                  reachedExtract={reachedExtract}
                 />
               )}
 
@@ -320,27 +322,29 @@ export default function Demo() {
           </div>
 
           {/* ── Final result summary (revealed at Route) ─────────────────── */}
-          {run && reachedExtract && (
-            <ResultSummary run={run} flagged={flagged} reachedRoute={reachedRoute} />
+          {run && reachedRoute && (
+            <ResultSummary run={run} flagged={flagged} />
           )}
 
-          {/* ── "What you're seeing" + upload ─────────────────────────────── */}
+          {/* ── "How this works" (collapsed) + upload ─────────────────────── */}
           <div className="demo-explain-grid">
             <div className="demo-explain">
-              <h2>What you’re seeing</h2>
-              <p>
-                This is a minimal, honest version of a production document-intelligence
-                pipeline. The orchestration, merge logic, confidence gate, and cost metering
-                are real, unit-tested code; in this key-free build the OCR engines and the
-                LLM replay committed fixtures, so the same flow runs fully offline.
-              </p>
-              <ul className="demo-explain-list">
-                <li><b>Dual-engine OCR</b> — two engines per page, reconciled field by field.</li>
-                <li><b>Frontier vision LLM</b> — classification &amp; extraction, schema-enforced (provider-neutral).</li>
-                <li><b>Judge / repair loop</b> — self-critique flags disagreements; only flagged fields are re-extracted.</li>
-                <li><b>Confidence-gated routing</b> — one pure gate decides auto-route vs. human review.</li>
-                <li><b>Per-document cost tracking</b> — token usage metered and rolled into KPIs.</li>
-              </ul>
+              <details className="demo-how-details">
+                <summary className="demo-how-summary">How this works under the hood</summary>
+                <p>
+                  This is a minimal, honest version of a production document-intelligence
+                  pipeline. The orchestration, merge logic, confidence gate, and cost metering
+                  are real, unit-tested code; in this key-free build the OCR engines and the
+                  LLM replay committed fixtures, so the same flow runs fully offline.
+                </p>
+                <ul className="demo-explain-list">
+                  <li><b>Dual-engine OCR</b> — two engines per page, reconciled field by field.</li>
+                  <li><b>Frontier vision LLM</b> — classification &amp; extraction, schema-enforced (provider-neutral).</li>
+                  <li><b>Quality-check / correction loop</b> — cross-check flags disagreements; only flagged fields are re-extracted.</li>
+                  <li><b>Confidence-gated routing</b> — one pure gate decides auto-route vs. human review.</li>
+                  <li><b>Per-document cost tracking</b> — token usage metered and rolled into KPIs.</li>
+                </ul>
+              </details>
             </div>
 
             <div className="demo-upload">
@@ -349,7 +353,7 @@ export default function Demo() {
                 <UploadPanel onResult={(r) => { setRun(r); setEngines(null); setActive(0); setPlaying(!freeze); }} />
               ) : (
                 <div className="demo-upload-locked">
-                  <div className="demo-upload-lock" aria-hidden="true">🔒</div>
+                  <div className="demo-upload-lock demo-realmode-badge" aria-hidden="true">⚙ Real-mode feature</div>
                   <p>
                     Uploading your own file runs it through a live frontier vision LLM. That’s
                     available in the full version with an API key configured. This public demo
@@ -380,7 +384,6 @@ function StagePanel({
   engines,
   sample,
   flagged,
-  reachedExtract,
 }: {
   node: StageDef;
   index: number;
@@ -388,7 +391,6 @@ function StagePanel({
   engines: EngineCandidates | null;
   sample: { id: string; label: string; note: string };
   flagged: Set<string>;
-  reachedExtract: boolean;
 }) {
   const s = run.stages.find((x) => x.stage === node.stages[0]);
   const ms = s?.ms ?? 0;
@@ -449,7 +451,7 @@ function StagePanel({
           <ConfBar c={run.judge.overall} label="overall document confidence" />
           {run.judge.flagged.length > 0 ? (
             <div className="demo-flag-list">
-              <span className="demo-flag-head">Flagged by judge</span>
+              <span className="demo-flag-head">Flagged by quality check</span>
               {run.judge.flagged.map((f) => (
                 <span key={f} className="demo-flag-chip">⚑ {f}</span>
               ))}
@@ -462,23 +464,19 @@ function StagePanel({
 
       {node.key === 'repair' && (
         s?.status === 'skipped' ? (
-          <div className="demo-judge-clean">No fields needed repair on this document.</div>
+          <div className="demo-judge-clean">No fields needed correction on this document.</div>
         ) : (
           <FieldTable
             fields={run.fields.filter((f) => f.repaired)}
             flagged={flagged}
             repaired
-            emptyNote="No repairs were required."
+            emptyNote="No corrections were required."
           />
         )
       )}
 
       {node.key === 'route' && run.route && (
         <RouteCard route={run.route} />
-      )}
-
-      {!reachedExtract && node.key === 'extract' && (
-        <div className="demo-skel-block" />
       )}
     </div>
   );
@@ -557,7 +555,7 @@ function FieldTable({
           <div className="demo-field-meta">
             <span className="demo-field-name">
               {f.name}
-              {f.repaired && <span className="demo-tag repaired">repaired</span>}
+              {f.repaired && <span className="demo-tag repaired">corrected</span>}
               {!f.repaired && flagged.has(f.name) && <span className="demo-tag flagged">flagged</span>}
             </span>
             <span className="demo-field-engine">{f.engine}</span>
@@ -601,14 +599,12 @@ function RouteCard({ route }: { route: NonNullable<PipelineState['route']> }) {
 function ResultSummary({
   run,
   flagged,
-  reachedRoute,
 }: {
   run: PipelineState;
   flagged: Set<string>;
-  reachedRoute: boolean;
 }) {
   const totalMs = run.stages.reduce((a, s) => a + s.ms, 0);
-  const repairedCount = run.fields.filter((f) => f.repaired).length;
+  const correctedCount = run.fields.filter((f) => f.repaired).length;
   return (
     <div className="demo-summary rise">
       <div className="demo-summary-head">
@@ -616,13 +612,13 @@ function ResultSummary({
         <div className="demo-summary-stats">
           <span><b>{run.fields.length}</b> fields</span>
           <span><b>{flagged.size}</b> flagged</span>
-          <span><b>{repairedCount}</b> repaired</span>
+          <span><b>{correctedCount}</b> corrected</span>
           <span><b>{(totalMs / 1000).toFixed(1)}s</b> total</span>
           <span><b>${run.costUsd.toFixed(4)}</b> cost</span>
         </div>
       </div>
       <FieldTable fields={run.fields} flagged={flagged} repaired={false} />
-      {reachedRoute && run.route && <RouteCard route={run.route} />}
+      {run.route && <RouteCard route={run.route} />}
     </div>
   );
 }

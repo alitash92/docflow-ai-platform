@@ -125,7 +125,7 @@ export default function DocTable({ runs, onOpenReview, totalCost }: Props) {
       <div className="table-foot">
         <span>
           {runs.length} documents · {runs.filter((r) => r.route?.decision === 'auto-routed').length} auto-routed ·{' '}
-          {runs.filter((r) => r.route?.decision === 'human-review').length} escalated
+          {runs.filter((r) => r.route?.decision === 'human-review').length} flagged for review
         </span>
         <span>run cost ${totalCost.toFixed(4)} — computed from token usage</span>
       </div>
