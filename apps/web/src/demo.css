@@ -40,6 +40,33 @@
   color: var(--ink);
 }
 
+/* The shared chrome (top nav + footer) must render identically on every page.
+   The remap above bleeds into them because they live inside .demo-page, which
+   left the nav's dark ink remapped to light — pale text on the light nav bar.
+   Restore the root working-surface values so the remap themes only the demo
+   content, never the chrome. Keep in sync with theme/tokens.css. */
+.demo-page .mkt-nav,
+.demo-page .mkt-footer {
+  --panel: #ffffff;
+  --panel-2: #f3f6f7;
+  --panel-border: #e3e9eb;
+  --panel-border-strong: #d2dbde;
+  --panel-head: #f7fafa;
+  --ink: #0c1b22;
+  --ink-soft: #324049;
+  --ink-dim: #5e6f78;
+  --ink-faint: #93a3ab;
+  --shadow-sm: 0 1px 2px rgba(12, 27, 34, 0.05), 0 2px 8px rgba(12, 27, 34, 0.05);
+  --shadow: 0 2px 6px rgba(12, 27, 34, 0.06), 0 12px 30px rgba(12, 27, 34, 0.09);
+  --accent-ink: #0b7f6c;
+  --accent-soft: rgba(15, 174, 147, 0.10);
+  --accent-line: rgba(15, 174, 147, 0.26);
+  --green-soft: rgba(18, 167, 106, 0.12);
+  --amber-soft: rgba(201, 138, 6, 0.13);
+  --red-soft: rgba(211, 74, 62, 0.11);
+  color: var(--ink);
+}
+
 /* the ambient grain wash sits over midnight now — warm it toward mint */
 .demo-page.paper-grain::before {
   background-image:
