@@ -48,7 +48,7 @@ export default function SignIn() {
 
           <p className="mkt-demo-badge">
             <span className="mkt-demo-dot" aria-hidden="true" />
-            Demo environment — this is a showcase gateway, not real authentication.
+            Showcase environment · any credentials open the live demo.
           </p>
 
           <form

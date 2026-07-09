@@ -95,7 +95,7 @@ export default function Contact() {
                 <h2>Send a message</h2>
                 <p className="mkt-demo-badge">
                   <span className="mkt-demo-dot" aria-hidden="true" />
-                  Demo form — submissions aren’t sent anywhere.
+                  Showcase form · messages aren’t delivered.
                 </p>
                 <form noValidate onSubmit={onSubmit}>
                   <label className="mkt-field">

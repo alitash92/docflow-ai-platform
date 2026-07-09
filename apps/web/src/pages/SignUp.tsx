@@ -94,7 +94,7 @@ export default function SignUp() {
 
           <p className="mkt-demo-badge">
             <span className="mkt-demo-dot" aria-hidden="true" />
-            Demo environment — no account is really created and nothing is sent.
+            Showcase environment · sign-up opens the demo, nothing is stored.
           </p>
 
           <form noValidate onSubmit={onSubmit}>

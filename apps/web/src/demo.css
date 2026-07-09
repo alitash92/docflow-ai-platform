@@ -5,19 +5,58 @@
    Scoped under .demo-page. Reuses tokens + .mkt + .btn.
    ════════════════════════════════════════════════════════════════════════ */
 
-.demo-page { --demo-accent: var(--accent); }
+/* ════════════════════════════════════════════════════════════════════════
+   ON-BRAND DARK MODE for the whole /demo surface.
+   The page used to open on the deep "midnight" hero and then drop into the
+   light clinical working surface — a jarring seam. Instead we keep the entire
+   walkthrough on the dark "Vital" identity by locally remapping the light
+   working-surface tokens to their deep equivalents. Every card, rail, table
+   and pill inherits the dark treatment with no JSX changes.
+   ════════════════════════════════════════════════════════════════════════ */
+.demo-page {
+  --demo-accent: var(--accent);
+  /* remap working-surface tokens → deep midnight equivalents */
+  --panel: #0b2027;                 /* was #ffffff  (--deep-2) */
+  --panel-2: #0e262e;               /* inset on midnight */
+  --panel-3: #103039;               /* lifted card (--deep-3) */
+  --panel-border: rgba(120, 220, 205, 0.14);
+  --panel-border-strong: rgba(120, 220, 205, 0.24);
+  --panel-head: #0e2830;
+  --ink: var(--deep-ink);           /* text on deep */
+  --ink-soft: #c2d6d3;
+  --ink-dim: var(--deep-dim);
+  --ink-faint: #6f918e;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.28), 0 2px 10px rgba(0, 0, 0, 0.24);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.32), 0 16px 40px rgba(0, 0, 0, 0.40);
+  /* brighter mint reads better on dark than the white-tuned --accent */
+  --accent-ink: var(--accent-bright);
+  --accent-soft: rgba(46, 230, 197, 0.10);
+  --accent-line: rgba(46, 230, 197, 0.26);
+  /* semantic softs restated a touch stronger for a dark backdrop */
+  --green-soft: rgba(18, 167, 106, 0.16);
+  --amber-soft: rgba(201, 138, 6, 0.16);
+  --red-soft: rgba(211, 74, 62, 0.16);
+  background: var(--deep);
+  color: var(--ink);
+}
+
+/* the ambient grain wash sits over midnight now — warm it toward mint */
+.demo-page.paper-grain::before {
+  background-image:
+    radial-gradient(circle at 16% 12%, rgba(46, 230, 197, 0.06) 0, transparent 42%),
+    radial-gradient(circle at 88% 8%, rgba(91, 108, 255, 0.05) 0, transparent 46%);
+}
 
 /* ── Header band ────────────────────────────────────────────────────────────── */
 .demo-head {
-  position: relative; overflow: hidden; padding: 64px 0 40px;
+  position: relative; overflow: hidden; padding: 72px 0 48px;
   background: var(--deep);
-  border-bottom: 1px solid var(--deep-border);
 }
 .demo-head-glow {
   position: absolute; inset: 0; pointer-events: none;
   background:
-    radial-gradient(640px 320px at 10% 0%, rgba(15, 174, 147, 0.16), transparent 66%),
-    radial-gradient(560px 300px at 92% 14%, rgba(91, 108, 255, 0.12), transparent 66%);
+    radial-gradient(720px 360px at 10% -10%, rgba(46, 230, 197, 0.18), transparent 64%),
+    radial-gradient(620px 340px at 92% 10%, rgba(91, 108, 255, 0.14), transparent 66%);
 }
 .demo-head-glow::after {
   content: ''; position: absolute; inset: 0;
@@ -41,6 +80,16 @@
   color: var(--deep-ink);
 }
 .demo-sub { font-size: 16.5px; color: var(--deep-dim); max-width: 720px; line-height: 1.62; }
+
+/* honest, quiet demo note under the sub — matches the sibling pattern */
+.demo-head-note {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 16px; font-size: 12px; color: var(--deep-dim);
+}
+.demo-head-note::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--accent-bright);
+  flex: none; box-shadow: 0 0 0 3px rgba(46, 230, 197, 0.14);
+}
 
 /* Document picker chips */
 .demo-doc-picker { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }

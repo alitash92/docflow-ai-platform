@@ -293,7 +293,7 @@ export default function Landing() {
               ))}
             </div>
             <p className="mkt-pricing-illus-note">
-              Pricing shown is illustrative — this is a portfolio demo, not a live product.
+              Illustrative pricing · portfolio showcase on synthetic data.
             </p>
           </div>
         </section>

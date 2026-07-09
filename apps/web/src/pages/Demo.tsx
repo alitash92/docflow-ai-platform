@@ -220,6 +220,8 @@ export default function Demo() {
               confidence-gated routing decision.
             </p>
 
+            <p className="demo-head-note">Synthetic data · no PHI · runs live in your browser</p>
+
             <div className="demo-doc-picker" role="group" aria-label="Choose a sample document">
               {SAMPLES.map((s) => (
                 <button
