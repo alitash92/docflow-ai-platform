@@ -1,0 +1,51 @@
+/* ════════════════════════════════════════════════════════════════════════
+   "The Document IS the Interface" — paper token layer.
+
+   All variables are namespaced --pp-* and scoped under .pp-scope so nothing
+   can bleed into the shared chrome (.mkt-nav/.mkt-footer) — the lesson from
+   the /demo token remap. Never reuse shared names (--ink, --panel, --accent).
+
+   Language rule: MACHINE annotations (OCR boxes, confidence, routing) speak
+   in brand mint — the continuity thread to /demo and the dashboard. HUMAN
+   annotations (marketing copy, review notes) speak in red/blue pen.
+   ════════════════════════════════════════════════════════════════════════ */
+.pp-scope {
+  /* the desk the paperwork sits on — midnight, kin to --deep */
+  --pp-desk: #0a1417;
+  --pp-desk-2: #0d1a1e;
+
+  /* paper surfaces */
+  --pp-paper: #f7f1e3;        /* warm fax paper */
+  --pp-paper-2: #f1e9d3;      /* aged page / appendix */
+  --pp-paper-edge: #ddd2b8;
+  --pp-paper-line: #e6dcc4;   /* ruled hairlines on paper */
+
+  /* inks */
+  --pp-ink: #26221a;          /* typewriter near-black */
+  --pp-ink-soft: #47412f;
+  --pp-ink-faded: #6b6350;
+  --pp-ink-ghost: #9d947c;
+
+  /* human pens */
+  --pp-pen-red: #c0392e;
+  --pp-pen-blue: #2b4a9e;
+  --pp-pencil: #8d8776;
+
+  /* stamps / semantic ink pads */
+  --pp-stamp-green: #1c7c4d;
+  --pp-stamp-red: #b23327;
+  --pp-stamp-amber: #a9740a;
+  --pp-redact: #141414;
+
+  /* the machine's ink = brand mint */
+  --pp-machine: var(--accent);
+  --pp-machine-bright: var(--accent-bright);
+  --pp-machine-soft: rgba(15, 174, 147, 0.10);
+
+  /* type — system stacks only, no webfonts */
+  --pp-fax: 'Courier New', Courier, ui-monospace, monospace;
+  --pp-hand: 'Bradley Hand', 'Segoe Print', 'Comic Sans MS', cursive;
+
+  --pp-shadow-page: 0 1px 2px rgba(0, 0, 0, 0.28), 0 18px 50px rgba(0, 0, 0, 0.5);
+  --pp-shadow-lift: 0 6px 14px rgba(0, 0, 0, 0.3), 0 22px 60px rgba(0, 0, 0, 0.45);
+}

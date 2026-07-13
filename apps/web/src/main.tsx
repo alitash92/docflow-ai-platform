@@ -7,6 +7,8 @@ import './anim/hero-pipeline.css';
 import './app.css';
 import './marketing.css';
 import './demo.css';
+import './paper/paper-tokens.css';
+import './paper/landing-paper.css';
 
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

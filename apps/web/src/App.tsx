@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-route
 import type { ReactNode } from 'react';
 import { AuthProvider, useAuth } from './auth';
 import Landing from './pages/Landing';
+import LandingPaper from './pages/LandingPaper';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Contact from './pages/Contact';
@@ -27,7 +28,8 @@ export default function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/demo" element={<Demo />} />
+          <Route path="/demo" element={<LandingPaper />} />
+          <Route path="/demo/live" element={<Demo />} />
           <Route
             path="/dashboard"
             element={
